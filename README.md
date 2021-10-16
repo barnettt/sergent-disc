@@ -24,10 +24,10 @@ I have commited some dummy files and folders so the tests will run. feel free to
 # Testing
 You can use Postman or any API test tool to test the following API's
   
-> /sergent-disc/v0.1/file/content  
+> /sergent-disc/v01/file/content  
 
 -  returns the file content given a file path as a request parameter
-> /sergent-disc/v0.1/file/content  
+> /sergent-disc/v01/file/content  
 > fileName='src/main/resources/test-files/jmeter.log'
 
 - returns a list of files matching the searchCriteria given as a parameter

@@ -51,7 +51,7 @@ public class DirectoryFileSearchControllerTest extends SargentDiscTestAbstract {
         expected.add(Paths.get(LOCATION + "/jmeter.log"));
         expected.add(Paths.get(LOCATION + "/jmeter-log.log"));
         when(service.searchForFiles(anyList())).thenReturn(expected);
-        MvcResult result = mvc.perform(get("/sargent-disc/v0.1/file/search")
+        MvcResult result = mvc.perform(get("/sargentdisc/v01/file/search")
                         .param("searchCriteria", "Locale")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

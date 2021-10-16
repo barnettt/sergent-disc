@@ -40,7 +40,7 @@ class DirectoryFileSearchIntegrationTest extends SargentDiscTestAbstract {
         Set<Path> expected = new HashSet<>();
         expected.add(Paths.get(LOCATION + "/jmeter.log"));
         expected.add(Paths.get(LOCATION + "jmeter-log.log"));
-        MvcResult result = mvc.perform(get("/sargent-disc/v0.1/file/content")
+        MvcResult result = mvc.perform(get("/sargentdisc/v01/file/content")
                         .param("fileName", LOCATION + "/jmeter.log")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

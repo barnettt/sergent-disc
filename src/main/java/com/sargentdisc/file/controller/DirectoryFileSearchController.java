@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/sargent-disc/v0.1")
+@RequestMapping("/")
 public class DirectoryFileSearchController {
 
     private DirectoryFileReaderService service;
@@ -24,16 +24,17 @@ public class DirectoryFileSearchController {
         this.service = service;
     }
 
-    @GetMapping(value = "/file/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "sargentdisc/v01/file/search", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Set<Path> findBySearchCriteria(@RequestParam(value = "searchCriteria") String searchCriteria) {
-        String[] searchTerms = searchCriteria.split(",");
-        return service.searchForFiles(Arrays.asList());
+    public Set<Path> findBySearchCriteria(@RequestParam String searchCriteria) {
+
+        return service.searchForFiles(Arrays.asList(searchCriteria));
     }
 
-    @GetMapping(value = "/file/content", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "sargentdisc/v01/file/content", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String findByFileName(@RequestParam(value = "fileName") String fileName) {
+    public String findByFileName(@RequestParam String fileName) {
+
         return service.getFileContent(fileName);
     }
 }

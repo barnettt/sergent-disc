@@ -21,3 +21,7 @@ to the dispatcher. I tried overriding the simpleurlhandler but it did not work.
 In tis situation I would go back to basic principles to try and eliminate the cause
 but i spent more than 5 hours on this so ill stop here.
 
+** Figured out why this didn't work, v0.1 seems to cause an issue
+and possibly sargent-disc. changed this and its fine now.
+added an exception handler controller advice as well.
+

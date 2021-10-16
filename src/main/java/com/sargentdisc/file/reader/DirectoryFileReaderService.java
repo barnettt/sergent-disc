@@ -37,18 +37,20 @@ public class DirectoryFileReaderService {
     public String getFileContent(String filePath) {
         List<String> lines = null;
         try {
-             lines = Files.readAllLines(Paths.get(filePath));
+            lines = Files.readAllLines(Paths.get(filePath));
         } catch (IOException e) {
             throw new UnableToAccessResourceException("Error reading file content");
         }
         final StringBuffer buffer = new StringBuffer();
-        if(lines != null) {
-            lines.forEach(line -> {buffer.append(line);
-                buffer.append("\n");});
+        if (lines != null) {
+            lines.forEach(line -> {
+                buffer.append(line);
+                buffer.append("\n");
+            });
         } else {
             throw new UnableToAccessResourceException("File Not Found");
         }
-         return buffer.toString();
+        return buffer.toString();
     }
 
     private void matchWordsInline(final List<String> words, final Set<Path> collectedPaths, final Path path) {
