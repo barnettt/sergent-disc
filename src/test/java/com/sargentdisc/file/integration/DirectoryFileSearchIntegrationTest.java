@@ -1,8 +1,5 @@
-package com.sargent.disc.file.controller;
+package com.sargentdisc.file.integration;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -11,8 +8,8 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.sargent.disc.file.SergentDiscTestAbstract;
-import com.sargent.disc.file.reader.DirectoryFileReaderService;
+import com.sargentdisc.file.SargentDiscTestAbstract;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,43 +19,33 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerA
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 
 @SpringBootTest()
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class,
         HibernateJpaAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class})
 @AutoConfigureMockMvc
-public class DirectoryFileSearchControllerTest extends SergentDiscTestAbstract  {
+class DirectoryFileSearchIntegrationTest extends SargentDiscTestAbstract {
+
 
     @Autowired
     MockMvc mvc;
 
-    @MockBean
-    DirectoryFileReaderService service;
-
-    @Autowired
-    DirectoryFileSearchController directoryFileSearchController ;
-
-    @DisplayName("I want to see files containing word")
+    @DisplayName("I want to see file containing words")
     @Test
-    void shouldGetFilePathsFromDirectoryService() throws Exception {
+    void shouldGetFileContentFromDirectoryService() throws Exception {
         Set<Path> expected = new HashSet<>();
-        expected.add(Paths.get(LOCATION+"/jmeter.log"));
-        expected.add(Paths.get(LOCATION+"/jmeter-log.log"));
-        when(service.searchForFiles(anyList())).thenReturn(expected);
-        MvcResult result = mvc.perform(get("/sergent-disc/v0.1/file/search")
-                        .param("searchCriteria", "Locale")
+        expected.add(Paths.get(LOCATION + "/jmeter.log"));
+        expected.add(Paths.get(LOCATION + "jmeter-log.log"));
+        MvcResult result = mvc.perform(get("/sargent-disc/v0.1/file/content")
+                        .param("fileName", LOCATION + "/jmeter.log")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
-        // expecting two files
-        assertTrue(result.getResponse().getContentAsString().contains(expected.iterator().next().toString()));
-        assertTrue(result.getResponse().getContentAsString().contains(expected.iterator().next().toString()));
+        Assertions.assertNotNull(result.getResponse().getContentAsString());
+        Assertions.assertTrue(result.getResponse().getContentAsString().length() > 0);
     }
-
 }

@@ -1,4 +1,4 @@
-package com.sargent.disc.file.exception;
+package com.sargentdisc.file.exception;
 
 public class UnableToAccessResourceException extends RuntimeException {
 

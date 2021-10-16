@@ -1,4 +1,4 @@
-package com.sargent.disc.file.reader;
+package com.sargentdisc.file.reader;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import com.sargent.disc.file.SergentDiscTestAbstract;
+import com.sargentdisc.file.SargentDiscTestAbstract;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,7 +24,7 @@ import org.springframework.test.util.ReflectionTestUtils;
         HibernateJpaAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class})
 
-public class DirectoryScanTest extends SergentDiscTestAbstract {
+public class DirectoryScanTest extends SargentDiscTestAbstract {
 
     DirectoryFileReaderService reader;
 
@@ -40,37 +40,37 @@ public class DirectoryScanTest extends SergentDiscTestAbstract {
     void shouldSearchDirectoryForFilesContaining(List<String> words) {
         Set<Path> foundFilePaths = reader.searchForFiles(words);
         Assertions.assertNotNull(foundFilePaths);
-        Assertions.assertEquals(2,foundFilePaths.size() );
+        Assertions.assertEquals(2, foundFilePaths.size());
     }
 
     @ParameterizedTest
     @MethodSource
     void shouldFindInCsvFilesContaining(List<String> words) {
-        Set<Path>  foundFilePaths = reader.searchForFiles(words);
+        Set<Path> foundFilePaths = reader.searchForFiles(words);
         Assertions.assertNotNull(foundFilePaths);
-        Assertions.assertEquals( 2, foundFilePaths.size());
+        Assertions.assertEquals(2, foundFilePaths.size());
     }
 
     @ParameterizedTest
     @MethodSource
-    void shouldFindFilesContaining(List<String> words)  {
-        Set<Path>  foundFilePaths = reader.searchForFiles(words);
+    void shouldFindFilesContaining(List<String> words) {
+        Set<Path> foundFilePaths = reader.searchForFiles(words);
         Assertions.assertNotNull(foundFilePaths);
         Assertions.assertEquals(1, foundFilePaths.size());
     }
 
     @ParameterizedTest
     @MethodSource
-    void shouldNotFindFilesNotAllWordsContained(List<String> words)  {
-        Set<Path>  foundFilePaths = reader.searchForFiles(words);
+    void shouldNotFindFilesNotAllWordsContained(List<String> words) {
+        Set<Path> foundFilePaths = reader.searchForFiles(words);
         Assertions.assertNotNull(foundFilePaths);
         Assertions.assertEquals(0, foundFilePaths.size());
     }
 
     @ParameterizedTest
     @MethodSource
-    void shouldThrowResourceInAccessibleException(List<String> words)  {
-        ReflectionTestUtils.setField(reader, "fileLocation", LOCATION+"/empty");
+    void shouldThrowResourceInAccessibleException(List<String> words) {
+        ReflectionTestUtils.setField(reader, "fileLocation", LOCATION + "/empty");
         org.assertj.core.api.Assertions.assertThatThrownBy(() -> reader.searchForFiles(words)
                 , "Unable to load files from resource directory");
     }
@@ -104,7 +104,8 @@ public class DirectoryScanTest extends SergentDiscTestAbstract {
         return Stream.of(Arguments.of(searchCriteria));
 
     }
-    static Stream<Arguments>  shouldThrowResourceInAccessibleException() {
+
+    static Stream<Arguments> shouldThrowResourceInAccessibleException() {
         List<String> searchCriteria = new ArrayList<>();
         searchCriteria.add("Locale");
         return Stream.of(Arguments.of(searchCriteria));
