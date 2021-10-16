@@ -1,22 +1,15 @@
-package com.sergent.disc.file.controller;
+package com.sargent.disc.file.integration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import com.sergent.disc.file.SergentDiscTestAbstract;
-import com.sergent.disc.file.reader.DirectoryFileReaderService;
-import org.assertj.core.api.Assertions;
+import com.sargent.disc.file.SergentDiscTestAbstract;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,36 +19,27 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerA
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-
 
 @SpringBootTest()
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class,
         HibernateJpaAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class})
 @AutoConfigureMockMvc
-public class DirectoryFileSearchControllerTest extends SergentDiscTestAbstract  {
+public class DirectoryFileSearchIntegrationTest extends SergentDiscTestAbstract {
+
 
     @Autowired
     MockMvc mvc;
 
-    @MockBean
-    DirectoryFileReaderService service;
-
-    @Autowired
-    DirectoryFileSearchController directoryFileSearchController ;
-
-    @DisplayName("I want to see files containing word")
+    @DisplayName("I want to see file containing words")
     @Test
-    void shouldGetFilePathsFromDirectoryService() throws Exception {
+    void shouldGetFileContentFromDirectoryService() throws Exception {
         Set<Path> expected = new HashSet<>();
         expected.add(Paths.get(LOCATION+"/jmeter.log"));
-        expected.add(Paths.get(LOCATION+"/jmeter-log.log"));
-        when(service.searchForFiles(anyList())).thenReturn(expected);
+        expected.add(Paths.get(LOCATION+"jmeter-log.log"));
         MvcResult result = mvc.perform(get("/sergent-disc/v0.1/file/search")
                         .param("searchCriteria", "Locale")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -63,5 +47,4 @@ public class DirectoryFileSearchControllerTest extends SergentDiscTestAbstract  
                 .andReturn();
         assertTrue(result.getResponse().getContentAsString().contains(expected.toString()));
     }
-
 }

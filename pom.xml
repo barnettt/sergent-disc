@@ -109,7 +109,7 @@
                             <archive>
                                 <manifest>
                                     <mainClass>
-                                        com.sergent.disc.file.Application.class
+                                        com.sargent.disc.file.Application.class
                                     </mainClass>
                                 </manifest>
                             </archive>

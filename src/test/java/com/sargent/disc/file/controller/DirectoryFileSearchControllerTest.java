@@ -1,4 +1,4 @@
-package com.sergent.disc.file.integration;
+package com.sargent.disc.file.controller;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -11,9 +11,8 @@ import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.sergent.disc.file.SergentDiscTestAbstract;
-import com.sergent.disc.file.reader.DirectoryFileReaderService;
-import org.assertj.core.api.Assertions;
+import com.sargent.disc.file.SergentDiscTestAbstract;
+import com.sargent.disc.file.reader.DirectoryFileReaderService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,28 +27,38 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+
 @SpringBootTest()
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class,
         HibernateJpaAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class})
 @AutoConfigureMockMvc
-public class DirectoryFileSearchIntegrationTest extends SergentDiscTestAbstract {
-
+public class DirectoryFileSearchControllerTest extends SergentDiscTestAbstract  {
 
     @Autowired
     MockMvc mvc;
 
-    @DisplayName("I want to see file containing words")
+    @MockBean
+    DirectoryFileReaderService service;
+
+    @Autowired
+    DirectoryFileSearchController directoryFileSearchController ;
+
+    @DisplayName("I want to see files containing word")
     @Test
-    void shouldGetFileContentFromDirectoryService() throws Exception {
+    void shouldGetFilePathsFromDirectoryService() throws Exception {
         Set<Path> expected = new HashSet<>();
         expected.add(Paths.get(LOCATION+"/jmeter.log"));
-        expected.add(Paths.get(LOCATION+"jmeter-log.log"));
+        expected.add(Paths.get(LOCATION+"/jmeter-log.log"));
+        when(service.searchForFiles(anyList())).thenReturn(expected);
         MvcResult result = mvc.perform(get("/sergent-disc/v0.1/file/search")
                         .param("searchCriteria", "Locale")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
-        assertTrue(result.getResponse().getContentAsString().contains(expected.toString()));
+        // expecting two files
+        assertTrue(result.getResponse().getContentAsString().contains(expected.iterator().next().toString()));
+        assertTrue(result.getResponse().getContentAsString().contains(expected.iterator().next().toString()));
     }
+
 }

@@ -1,4 +1,4 @@
-package com.sergent.disc.file.reader;
+package com.sargent.disc.file.reader;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.sergent.disc.file.exception.UnableToAccessResourceException;
+import com.sargent.disc.file.exception.UnableToAccessResourceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

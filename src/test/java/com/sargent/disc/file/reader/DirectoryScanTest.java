@@ -1,17 +1,14 @@
-package com.sergent.disc.file.reader;
+package com.sargent.disc.file.reader;
 
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import com.sergent.disc.file.SergentDiscTestAbstract;
-import com.sergent.disc.file.exception.UnableToAccessResourceException;
+import com.sargent.disc.file.SergentDiscTestAbstract;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
