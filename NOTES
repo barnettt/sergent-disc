@@ -15,3 +15,9 @@ we have a bad path
 we need to consider the size of the files. we may be searching a file that too large
 and fail trying to retrieve its content
 
+Having an issue with requestmapinghandler. for some reason the controller mappings are not mapped
+to the dispatcher. I tried overriding the simpleurlhandler but it did not work.
+
+In tis situation I would go baclk to basic principles to try and eliminate the cause
+but i spent more than 5 hours on this so ill stop here.
+
