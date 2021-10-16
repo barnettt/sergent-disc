@@ -6,4 +6,8 @@ public class UnableToAccessResourceException extends RuntimeException {
     public UnableToAccessResourceException(){
         super(MESSAGE);
     }
+
+    public UnableToAccessResourceException(String message){
+        super(message);
+    }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import com.sergent.disc.file.SergentDiscTestAbstract;
 import com.sergent.disc.file.exception.UnableToAccessResourceException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,7 @@ import org.springframework.test.util.ReflectionTestUtils;
         HibernateJpaAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class})
 
-public class DirectoryScanTest {
+public class DirectoryScanTest extends SergentDiscTestAbstract {
 
     DirectoryFileReaderService reader;
 
@@ -42,7 +43,7 @@ public class DirectoryScanTest {
     void shouldSearchDirectoryForFilesContaining(List<String> words) {
         Set<Path> foundFilePaths = reader.searchForFiles(words);
         Assertions.assertNotNull(foundFilePaths);
-        Assertions.assertEquals(3,foundFilePaths.size() ); // one null value and 2 file paths
+        Assertions.assertEquals(2,foundFilePaths.size() );
     }
 
     @ParameterizedTest
@@ -50,29 +51,38 @@ public class DirectoryScanTest {
     void shouldFindInCsvFilesContaining(List<String> words) {
         Set<Path>  foundFilePaths = reader.searchForFiles(words);
         Assertions.assertNotNull(foundFilePaths);
-        Assertions.assertEquals( 3, foundFilePaths.size()); // one null value and 2 file paths
+        Assertions.assertEquals( 2, foundFilePaths.size());
     }
 
     @ParameterizedTest
     @MethodSource
-    void shouldFindMultipleFilesContaining(List<String> words)  {
+    void shouldFindFilesContaining(List<String> words)  {
         Set<Path>  foundFilePaths = reader.searchForFiles(words);
         Assertions.assertNotNull(foundFilePaths);
-        Assertions.assertEquals(6, foundFilePaths.size());// 1 null and 5 file paths
+        Assertions.assertEquals(1, foundFilePaths.size());
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void shouldNotFindFilesNotAllWordsContained(List<String> words)  {
+        Set<Path>  foundFilePaths = reader.searchForFiles(words);
+        Assertions.assertNotNull(foundFilePaths);
+        Assertions.assertEquals(0, foundFilePaths.size());
     }
 
     @ParameterizedTest
     @MethodSource
     void shouldThrowResourceInAccessibleException(List<String> words)  {
-        ReflectionTestUtils.setField(reader, "fileLocation", "/Users/abuayyub/git/test-files/empty");
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> reader.searchForFiles(words), "Unable to load files from resource directory");
+        ReflectionTestUtils.setField(reader, "fileLocation", LOCATION+"/empty");
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> reader.searchForFiles(words)
+                , "Unable to load files from resource directory");
     }
 
 
     static Stream<Arguments> shouldSearchDirectoryForFilesContaining() {
         List<String> searchCriteria = new ArrayList<>();
         searchCriteria.add("Locale");
-        return Stream.of(Arguments.of(searchCriteria));  // expect 1 file
+        return Stream.of(Arguments.of(searchCriteria));
     }
 
     static Stream<Arguments> shouldFindInCsvFilesContaining() {
@@ -83,20 +93,24 @@ public class DirectoryScanTest {
         return Stream.of(Arguments.of(searchCriteria));
     }
 
-    static Stream<Arguments> shouldFindMultipleFilesContaining() {
+    static Stream<Arguments> shouldFindFilesContaining() {
         List<String> searchCriteria = new ArrayList<>();
-        searchCriteria.add("Furniture");
-        searchCriteria.add("Washroom");
         searchCriteria.add("administrator");
         searchCriteria.add("pleasedlnow");
-        searchCriteria.add("Locale");
         return Stream.of(Arguments.of(searchCriteria));
     }
 
+    static Stream<Arguments> shouldNotFindFilesNotAllWordsContained() {
+        List<String> searchCriteria = new ArrayList<>();
+        searchCriteria.add("administrator");
+        searchCriteria.add("Furniture");
+        return Stream.of(Arguments.of(searchCriteria));
+
+    }
     static Stream<Arguments>  shouldThrowResourceInAccessibleException() {
         List<String> searchCriteria = new ArrayList<>();
         searchCriteria.add("Locale");
-        return Stream.of(Arguments.of(searchCriteria));  // expect 1 file
+        return Stream.of(Arguments.of(searchCriteria));
 
     }
 

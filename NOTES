@@ -12,3 +12,6 @@ I thought about using Files.isReadable to check the path before trying to walk i
 but I think its better we try to walk and throw an exception so we know for sure
 we have a bad path
 
+we need to consider the size of the files. we may be searching a file that too large
+and fail trying to retrieve its content
+
