@@ -1,0 +1,14 @@
+I thought about reading docx files and pdfs, but you need special libraries for reading those.
+I decided to keep it to simple text files and csv's just for this exercise.
+
+I started with a test case that drove out the DirectoryFileReaderService.class.
+I felt once i could read the files and prove it, the rest is easy.
+
+I'm not sure if it was the content of the file that should be returned or the path
+to it. so i'll attempt to create an api for listing the files found and
+returning the content.
+
+I thought about using Files.isReadable to check the path before trying to walk it,
+but I think its better we try to walk and throw an exception so we know for sure
+we have a bad path
+
